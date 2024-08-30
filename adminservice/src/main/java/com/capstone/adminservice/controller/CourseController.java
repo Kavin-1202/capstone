@@ -26,7 +26,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @PostMapping("/{requestid}")
+    @PostMapping("/create{requestid}")
     public ResponseEntity<Course> createCourse(@PathVariable Long requestid,@Valid @RequestBody CourseDTO courseDTO) throws ResourceNotFoundException {
         Course createdCourse = courseService.createCourse(requestid,courseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
@@ -50,16 +50,16 @@ public class CourseController {
         return ResponseEntity.ok(course);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable Long id, @Valid @RequestBody CourseDTO courseDTO) throws ResourceNotFoundException {
         Course updatedCourse = courseService.updateCourse(id, courseDTO);
         return ResponseEntity.ok(updatedCourse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id) throws ResourceNotFoundException {
         courseService.deleteCourse(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("course removed successfully!");
     }
     @GetMapping("/dashboard")
     public ResponseEntity<List<TrainingResponse>> getRequests(){

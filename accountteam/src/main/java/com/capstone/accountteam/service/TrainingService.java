@@ -52,4 +52,11 @@ public class TrainingService {
         request.setStatus(status);
         trainingRequestRepository.save(request);
     }
+    public List<TrainingRequest> getRequestByrequestname(String requestorname) {
+        List<TrainingRequest> request=trainingRequestRepository.findByRequestorname(requestorname);
+        if(request==null){
+            throw new ResourseNotFoundException("No requests found");
+        }
+        return request;
+    }
 }

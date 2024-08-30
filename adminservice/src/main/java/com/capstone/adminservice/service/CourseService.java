@@ -60,8 +60,8 @@ public class CourseService {
     }
 
     public FullResponse getCoursesByName(String name) throws ResourceNotFoundException {
-        Optional<Course> course = courseRepository.findByCoursename(name);
-        if(course.isEmpty())
+        Course course = courseRepository.findByCoursename(name).orElse(null);
+        if(course==null)
             throw new ResourceNotFoundException(courseNotFound + name);
         FullResponse response=new FullResponse();
         BeanUtils.copyProperties(course,response);
@@ -84,8 +84,13 @@ public class CourseService {
         if(course==null){
             throw new ResourceNotFoundException("course not found");
         }
+        if(courseDTO.getOtherlinks()!=null)
         course.setOtherlinks(courseDTO.getOtherlinks());
+
+        if(courseDTO.getResourcelinks()!=null)
         course.setResourcelinks(courseDTO.getResourcelinks());
+
+        if(courseDTO.getOutcomes()!=null)
         course.setOutcomes(courseDTO.getOutcomes());
         course = courseRepository.save(course);
         return course;

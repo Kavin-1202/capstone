@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/accounts")
 public class TrainingController {
 
 
@@ -41,10 +41,18 @@ public class TrainingController {
         return ResponseEntity.status(HttpStatus.OK).body(ex.getMessage());
     }
     @PutMapping("/trainingRequest/{requestid}/status")
-    public ResponseEntity<Void> updateTrainingRequestStatus(@PathVariable Long requestid, @RequestParam Status status) {
+    public ResponseEntity<String> updateTrainingRequestStatus(@PathVariable Long requestid, @RequestParam Status status) {
         trainingService.updateRequestStatus(requestid, status);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("staus changed");
     }
+
+    @GetMapping("/trainingRequest/requestor/{name}")
+    public ResponseEntity<List<TrainingRequest>> getTrainingRequestByRequestName(@PathVariable String requestname) {
+        List<TrainingRequest> request = trainingService.getRequestByrequestname(requestname);
+        return ResponseEntity.ok(request);
+    }
+
+
 
 }
 

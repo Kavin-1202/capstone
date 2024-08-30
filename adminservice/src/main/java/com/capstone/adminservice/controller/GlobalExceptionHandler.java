@@ -1,4 +1,4 @@
-package com.capstone.adminservice.exception;
+package com.capstone.adminservice.controller;
 
 import com.capstone.adminservice.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;

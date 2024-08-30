@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class TrainingResponse {
     private Long requestid;
     private String accountid;
+    private String requestorname;
     private String coursename;
     private Status status;
     private LocalDateTime createddate;

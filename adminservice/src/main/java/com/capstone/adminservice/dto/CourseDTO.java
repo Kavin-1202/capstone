@@ -20,12 +20,12 @@ public class CourseDTO {
 //    @Size(max = 500, message = "Description should not exceed 500 characters")
 //    private String description;
 
-    @NotBlank(message = "Resource links are required")
+
     private String resourcelinks;
 
-    @Size(max = 300, message = "Additional links should not exceed 300 characters")
+
     private String otherlinks;
 
-    @NotBlank(message = "Outcomes are required")
+
     private String outcomes;
 }
