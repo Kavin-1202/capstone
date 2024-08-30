@@ -1,6 +1,9 @@
 package com.capstone.adminservice.controller;
 
 import com.capstone.adminservice.dto.CourseDTO;
+import com.capstone.adminservice.dto.FullResponse;
+import com.capstone.adminservice.dto.TrainingRequest;
+import com.capstone.adminservice.dto.TrainingResponse;
 import com.capstone.adminservice.entity.Course;
 import com.capstone.adminservice.exceptions.ResourceNotFoundException;
 import com.capstone.adminservice.service.CourseService;
@@ -23,36 +26,33 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @PostMapping
-    public ResponseEntity<CourseDTO> createCourse(@Valid @RequestBody CourseDTO courseDTO) {
-        CourseDTO createdCourse = courseService.createCourse(courseDTO);
+    @PostMapping("/{requestid}")
+    public ResponseEntity<Course> createCourse(@PathVariable Long requestid,@Valid @RequestBody CourseDTO courseDTO) throws ResourceNotFoundException {
+        Course createdCourse = courseService.createCourse(requestid,courseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@PathVariable Long id) {
-        Optional<CourseDTO> courseDTO = courseService.getCourseById(id);
-        return courseDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<FullResponse> getCourseById(@PathVariable Long id) throws ResourceNotFoundException {
+        Optional<FullResponse> response = courseService.getCourseById(id);
+        return response.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
 
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
-        List<CourseDTO> courseDTOs = courseService.getAllCourses();
-        return ResponseEntity.ok(courseDTOs);
+    public ResponseEntity<List<FullResponse>> getAllCourses() {
+        List<FullResponse> responses = courseService.getAllCourses();
+        return ResponseEntity.ok(responses);
     }
     @GetMapping("/name/{name}")
-    public ResponseEntity<Course> getCoursesByName(@PathVariable String name) {
-        Optional<Course> course = courseService.getCoursesByName(name);
-        if (course.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(course.get());
+    public ResponseEntity<FullResponse> getCoursesByName(@PathVariable String name) throws ResourceNotFoundException {
+        FullResponse course = courseService.getCoursesByName(name);
+        return ResponseEntity.ok(course);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long id, @Valid @RequestBody CourseDTO courseDTO) throws ResourceNotFoundException {
-        CourseDTO updatedCourse = courseService.updateCourse(id, courseDTO);
+    public ResponseEntity<Course> updateCourse(@PathVariable Long id, @Valid @RequestBody CourseDTO courseDTO) throws ResourceNotFoundException {
+        Course updatedCourse = courseService.updateCourse(id, courseDTO);
         return ResponseEntity.ok(updatedCourse);
     }
 
@@ -61,4 +61,13 @@ public class CourseController {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/dashboard")
+    public ResponseEntity<List<TrainingResponse>> getRequests(){
+        return ResponseEntity.ok(courseService.getRequests());
+    }
+    @GetMapping("/dashboard/view/{requestid}")
+    public ResponseEntity<TrainingRequest> getRequestPlan(@PathVariable Long requestid){
+        return ResponseEntity.ok(courseService.getRequest(requestid));
+    }
+
 }

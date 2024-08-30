@@ -1,65 +1,50 @@
 package com.capstone.accountteam.controller;
-
-//import com.capstone.accountteam.entity.Mentor;
-//import com.capstone.accountteam.entity.Message;
+import com.capstone.accountteam.dtos.TrainingRequestdto;
+import com.capstone.accountteam.dtos.TrainingResponse;
+import com.capstone.accountteam.entity.Status;
 import com.capstone.accountteam.entity.TrainingRequest;
-//import com.capstone.accountteam.repository.MentorRepository;
-//import com.capstone.accountteam.repository.MessageRepository;
-import com.capstone.accountteam.repository.TrainingRepository;
+import com.capstone.accountteam.exception.ResourseNotFoundException;
+import com.capstone.accountteam.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class TrainingController {
 
+
     @Autowired
-    private TrainingRepository trainingRequestRepository;
+    private TrainingService trainingService;
 
-//    @Autowired
-//    private MentorRepository mentorRepository;
-//
-//    @Autowired
-//    private MessageRepository messageRepository;
-
-    @PostMapping("/trainingRequests")
-    public ResponseEntity<TrainingRequest> submitTrainingRequest(@RequestBody TrainingRequest trainingRequest) {
-        trainingRequest.setCreateddate(LocalDateTime.now());
-        TrainingRequest savedRequest = trainingRequestRepository.save(trainingRequest);
+    @PostMapping("/trainingRequest")
+    public ResponseEntity<TrainingRequest> submitTrainingRequest(@RequestBody TrainingRequestdto trainingRequest) {
+        TrainingRequest savedRequest=trainingService.requestform(trainingRequest);
         return ResponseEntity.ok(savedRequest);
     }
 
     @GetMapping("/trainingRequests")
-    public ResponseEntity<List<TrainingRequest>> getAllTrainingRequests() {
-        List<TrainingRequest> requests = trainingRequestRepository.findAll();
+    public ResponseEntity<List<TrainingResponse>> getAllTrainingRequests() {
+        List<TrainingResponse> requests=trainingService.getAllRequests();
         return ResponseEntity.ok(requests);
     }
+    @GetMapping("/trainingRequest/{requestid}")
+    public ResponseEntity<TrainingRequest> getTrainingRequestsByRequestid(@PathVariable Long requestid) {
+        TrainingRequest request = trainingService.getRequestByrequestid(requestid);
+        return ResponseEntity.ok(request);
+    }
+    @ExceptionHandler(ResourseNotFoundException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> handleSetNotFoundException(ResourseNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.OK).body(ex.getMessage());
+    }
+    @PutMapping("/trainingRequest/{requestid}/status")
+    public ResponseEntity<Void> updateTrainingRequestStatus(@PathVariable Long requestid, @RequestParam Status status) {
+        trainingService.updateRequestStatus(requestid, status);
+        return ResponseEntity.ok().build();
+    }
 
-//    @GetMapping("/mentors/{mentorId}/dashboard")
-//    public ResponseEntity<Mentor> getMentorDashboard(@PathVariable Long mentorId) {
-//        Mentor mentor = mentorRepository.findById(mentorId).orElse(null);
-//        if (mentor != null) {
-//            return ResponseEntity.ok(mentor);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @PostMapping("/mentors/{mentorId}/employees/{employeeId}/sendMessage")
-//    public ResponseEntity<Message> sendMessage(@PathVariable Long mentorId,
-//                                               @PathVariable Long employeeId,
-//                                               @RequestBody String content) {
-//        Message message = new Message();
-//        message.setMentorId(mentorId);
-//        message.setEmployeeId(employeeId);
-//        message.setContent(content);
-//        message.setSentDate(LocalDateTime.now());
-//        Message savedMessage = messageRepository.save(message);
-//        return ResponseEntity.ok(savedMessage);
-//    }
 }
 

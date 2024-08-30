@@ -4,33 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Course {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long courseid;
-
-    long requestid; //foreignkey
-
-
+    private Long courseid;
+    private Long requestid;
     @Column(columnDefinition = "VARCHAR(255)",unique = true)
-    String coursename;
-
+    private String coursename;
     @Column(columnDefinition = "TEXT")
-    String description;
-
+    private String description;
     @Column(columnDefinition = "TEXT")
-    String resourcelinks;
-
+    private String resourcelinks;
     @Column(columnDefinition = "TEXT")
-    String otherlinks;
-
+    private String otherlinks;
     @Column(columnDefinition = "TEXT")
-    String outcomes;
+    private String outcomes;
 
 }

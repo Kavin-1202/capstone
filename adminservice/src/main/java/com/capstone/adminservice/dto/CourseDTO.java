@@ -12,13 +12,13 @@ import jakarta.validation.constraints.Size;
 @NoArgsConstructor
 public class CourseDTO {
 
-    @NotBlank(message = "Course name is required")
-    @Size(max = 100, message = "Course name should not exceed 100 characters")
-    private String coursename;
+//    @NotBlank(message = "Course name is required")
+//    @Size(max = 100, message = "Course name should not exceed 100 characters")
+//    private String coursename;
 
-    @NotBlank(message = "Description is required")
-    @Size(max = 500, message = "Description should not exceed 500 characters")
-    private String description;
+//    @NotBlank(message = "Description is required")
+//    @Size(max = 500, message = "Description should not exceed 500 characters")
+//    private String description;
 
     @NotBlank(message = "Resource links are required")
     private String resourcelinks;
