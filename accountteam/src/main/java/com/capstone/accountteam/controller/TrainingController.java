@@ -47,8 +47,8 @@ public class TrainingController {
     }
 
     @GetMapping("/trainingRequest/requestor/{name}")
-    public ResponseEntity<List<TrainingRequest>> getTrainingRequestByRequestName(@PathVariable String requestname) {
-        List<TrainingRequest> request = trainingService.getRequestByrequestname(requestname);
+    public ResponseEntity<List<TrainingRequest>> getTrainingRequestByRequestName(@PathVariable String name) {
+        List<TrainingRequest> request = trainingService.getRequestByrequestname(name);
         return ResponseEntity.ok(request);
     }
 
