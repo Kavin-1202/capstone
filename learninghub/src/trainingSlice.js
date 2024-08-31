@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // Define an async thunk for fetching a single request by ID
 export const fetchRequestById = createAsyncThunk(
@@ -56,10 +57,12 @@ const trainingSlice = createSlice({
         state.loading = false;
         // Assuming the payload is a single request object, not an array
         state.requests.push(action.payload); 
+        toast.success('Data submitted successfully!');
       })
       .addCase(submitTrainingRequest.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+        toast.error('Error submitting data'); // Error toast
       })
       .addCase(fetchRequestById.pending, (state) => {
         state.loading = true;
