@@ -49,7 +49,7 @@ public class EmployeeController {
 
     @PostMapping("/addemployees")
     public ResponseEntity<String> addEmployees(@RequestBody List<String> emails){
-        employeeService.sendMail(emails);
+        employeeService.addEmployees(emails);
         return ResponseEntity.ok("credentials sent successfully");
     }
 

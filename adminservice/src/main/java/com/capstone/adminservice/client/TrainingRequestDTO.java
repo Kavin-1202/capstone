@@ -1,5 +1,6 @@
-package com.capstone.adminservice.dto;
+package com.capstone.adminservice.client;
 
+import com.capstone.adminservice.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainingRequest {
+public class TrainingRequestDTO {
     private Long requestid;
     private String accountid;
     private String requestorname;

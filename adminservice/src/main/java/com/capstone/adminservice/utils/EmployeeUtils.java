@@ -19,7 +19,8 @@ public class EmployeeUtils {
     }
 
     public static EmployeeDTO entityToDto(Employee employee) {
-        return new EmployeeDTO(employee.getUsername(), employee.getPassword());
+        return new EmployeeDTO(employee.getUsername(),
+                employee.getEmail());
     }
 
 

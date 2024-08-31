@@ -1,8 +1,11 @@
 package com.capstone.adminservice.service;
 
 import com.capstone.adminservice.client.Accountclient;
+import com.capstone.adminservice.client.TrainingRequestDTO;
+import com.capstone.adminservice.client.TrainingResponse;
 import com.capstone.adminservice.dto.*;
 import com.capstone.adminservice.entity.Course;
+import com.capstone.adminservice.entity.Status;
 import com.capstone.adminservice.exceptions.ResourceNotFoundException;
 import com.capstone.adminservice.repository.CourseRepository;
 import com.capstone.adminservice.utils.CourseMapper;
@@ -27,7 +30,7 @@ public class CourseService {
     }
     public Course createCourse(Long requestid,CourseDTO courseDTO) throws ResourceNotFoundException {
         // Fetch the training request details using Feign client
-        TrainingRequest request = accountclient.getTrainingRequestsByRequestid(requestid).getBody();
+        TrainingRequestDTO request = accountclient.getTrainingRequestsByRequestid(requestid).getBody();
 
         // Check if the request exists
         if (request == null) {
@@ -60,7 +63,7 @@ public class CourseService {
     }
 
     public FullResponse getCoursesByName(String name) throws ResourceNotFoundException {
-        Course course = courseRepository.findByCoursename(name).orElse(null);
+        Course course = courseRepository.findByCoursenameIgnoreCase(name).orElse(null);
         if(course==null)
             throw new ResourceNotFoundException(courseNotFound + name);
         FullResponse response=new FullResponse();
@@ -107,7 +110,7 @@ public class CourseService {
     public List<TrainingResponse> getRequests(){
         return accountclient.getAllTrainingRequests().getBody();
     }
-    public TrainingRequest getRequest(Long requestid){
+    public TrainingRequestDTO getRequest(Long requestid){
         return accountclient.getTrainingRequestsByRequestid(requestid).getBody();
     }
 

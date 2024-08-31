@@ -6,6 +6,7 @@ import com.capstone.adminservice.entity.Employee;
 import com.capstone.adminservice.repository.EmployeeRepository;
 import com.capstone.adminservice.utils.EmployeeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -22,17 +23,13 @@ public class EmployeeService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Value("${spring.mail.username}")
+    String sender;
+
 
 //    @Autowired
 //    private BCryptPasswordEncoder passwordEncoder;  // Autowire the BCryptPasswordEncoder
 
-    // Create a new Employee with encoded password
-    public Employee createEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        employee.setUsername(employee.getUsername());
-        employee.setPassword(employeeDTO.getPassword());  // Encode the password
-        return employeeRepository.save(employee);
-    }
 
     // Get all Employees
     public List<EmployeeDTO> getAllEmployees() {
@@ -41,7 +38,7 @@ public class EmployeeService {
                 .map(employee -> {
                     EmployeeDTO dto = new EmployeeDTO();
                     dto.setUsername(employee.getUsername());
-                    dto.setPassword(employee.getPassword());
+                    dto.setEmail(employee.getEmail());
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -53,7 +50,7 @@ public class EmployeeService {
                 .map(employee -> {
                     EmployeeDTO dto = new EmployeeDTO();
                     dto.setUsername(employee.getUsername());
-                    dto.setPassword(employee.getPassword());
+                    dto.setEmail(employee.getEmail());
                     return dto;
                 })
                 .orElse(null);
@@ -68,26 +65,27 @@ public class EmployeeService {
 
     //send bulk emails
 
-    public void sendMail(List<String> emails){
+    public void addEmployees(List<String> emails){
 
         String subject = "FYI:Login Credentials";
-        String sender = "sakthisiddu01@gmail.com";
 
         for(String email:emails){
-            SimpleMailMessage simpleMailMessage =  new SimpleMailMessage();
-            simpleMailMessage.setFrom(sender);
-            simpleMailMessage.setTo(email);
-            simpleMailMessage.setSubject(subject);
+//            SimpleMailMessage simpleMailMessage =  new SimpleMailMessage();
+//            simpleMailMessage.setFrom(sender);
+//            simpleMailMessage.setTo(email);
+//            simpleMailMessage.setSubject(subject);
 
             String password = EmployeeUtils.generateRandomString(8);
             String body = email + "\n" + password;
-            simpleMailMessage.setText(body);
+//            simpleMailMessage.setText(body);
 
+            String username = email.substring(0, email.indexOf('@'));
             Employee employee = new Employee();
-            employee.setUsername(email);
+            employee.setUsername(username);
+            employee.setEmail(email);
             employee.setPassword(password);
             employeeRepository.save(employee);
-            javaMailSender.send(simpleMailMessage);
+         //   javaMailSender.send(simpleMailMessage);
         }
 
 

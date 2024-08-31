@@ -1,5 +1,6 @@
-package com.capstone.adminservice.dto;
+package com.capstone.adminservice.client;
 
+import com.capstone.adminservice.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
