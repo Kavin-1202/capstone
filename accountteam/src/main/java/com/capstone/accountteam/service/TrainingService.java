@@ -1,5 +1,6 @@
 package com.capstone.accountteam.service;
 
+import com.capstone.accountteam.dtos.Dashboarddto;
 import com.capstone.accountteam.dtos.TrainingRequestdto;
 import com.capstone.accountteam.dtos.TrainingResponse;
 import com.capstone.accountteam.entity.Status;
@@ -9,8 +10,7 @@ import com.capstone.accountteam.repository.TrainingRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +18,14 @@ import java.util.List;
 public class TrainingService {
     @Autowired
     private TrainingRepository trainingRequestRepository;
-    public TrainingRequest requestform(TrainingRequestdto trainingRequest) {
+    public String requestform(TrainingRequestdto trainingRequest) {
         TrainingRequest request=new TrainingRequest();
         trainingRequestRepository.save(request);
         BeanUtils.copyProperties(trainingRequest, request);
-        request.setCreateddate(LocalDateTime.now());
+        request.setCreateddate(LocalDate.now());
         request.setStatus(Status.Pending);
-        return trainingRequestRepository.save(request);
+        trainingRequestRepository.save(request);
+        return "Request created successfully";
     }
 
     public List<TrainingResponse> getAllRequests() {
@@ -52,11 +53,17 @@ public class TrainingService {
         request.setStatus(status);
         trainingRequestRepository.save(request);
     }
-    public List<TrainingRequest> getRequestByrequestname(String requestorname) {
-        List<TrainingRequest> request=trainingRequestRepository.findByRequestorname(requestorname);
-        if(request==null){
+    public List<Dashboarddto> getRequestByrequestname(String requestorname) {
+        List<TrainingRequest> requests=trainingRequestRepository.findByRequestorname(requestorname);
+        List<Dashboarddto> dashboarddtoList=new ArrayList<>();
+        for(TrainingRequest request:requests ){
+            Dashboarddto dto=new Dashboarddto();
+            BeanUtils.copyProperties(request, dto);
+            dashboarddtoList.add(dto);
+        }
+        if(dashboarddtoList.isEmpty()){
             throw new ResourseNotFoundException("No requests found");
         }
-        return request;
+        return dashboarddtoList;
     }
 }

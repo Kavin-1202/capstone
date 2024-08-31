@@ -16,5 +16,6 @@ public class TrainingRequestdto {
     private String concepts;
     private String duration;
     private String employeeposition;
-    private int Requiredemployees;
+    private int requiredemployees;
+
 }

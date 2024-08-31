@@ -3,7 +3,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -28,7 +30,7 @@ public class TrainingRequest {
     private String employeeposition;
     private Status status; // PENDING or COMPLETED
     @Column(columnDefinition = "DATE")
-    private LocalDateTime createddate;
-    private int Requiredemployees;
+    private LocalDate createddate;
+    private int requiredemployees;
 
 }

@@ -12,10 +12,10 @@ import java.util.List;
 
 @FeignClient(name = "Accountteam",url = "http://localhost:9000/accounts")
 public interface Accountclient {
-    @GetMapping("/trainingRequest/{requestid}")
+    @GetMapping("/viewRequest/{requestid}")
     public ResponseEntity<TrainingRequestDTO> getTrainingRequestsByRequestid(@PathVariable Long requestid);
 
-    @GetMapping("/trainingRequests")
+    @GetMapping("/viewRequests")
     public ResponseEntity<List<TrainingResponse>> getAllTrainingRequests();
 
 

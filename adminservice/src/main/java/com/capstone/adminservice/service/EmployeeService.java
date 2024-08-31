@@ -70,14 +70,14 @@ public class EmployeeService {
         String subject = "FYI:Login Credentials";
 
         for(String email:emails){
-//            SimpleMailMessage simpleMailMessage =  new SimpleMailMessage();
-//            simpleMailMessage.setFrom(sender);
-//            simpleMailMessage.setTo(email);
-//            simpleMailMessage.setSubject(subject);
+            SimpleMailMessage simpleMailMessage =  new SimpleMailMessage();
+            simpleMailMessage.setFrom(sender);
+            simpleMailMessage.setTo(email);
+            simpleMailMessage.setSubject(subject);
 
             String password = EmployeeUtils.generateRandomString(8);
             String body = email + "\n" + password;
-//            simpleMailMessage.setText(body);
+            simpleMailMessage.setText(body);
 
             String username = email.substring(0, email.indexOf('@'));
             Employee employee = new Employee();
@@ -85,7 +85,7 @@ public class EmployeeService {
             employee.setEmail(email);
             employee.setPassword(password);
             employeeRepository.save(employee);
-         //   javaMailSender.send(simpleMailMessage);
+            javaMailSender.send(simpleMailMessage);
         }
 
 

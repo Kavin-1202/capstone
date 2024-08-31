@@ -1,4 +1,5 @@
 package com.capstone.accountteam.controller;
+import com.capstone.accountteam.dtos.Dashboarddto;
 import com.capstone.accountteam.dtos.TrainingRequestdto;
 import com.capstone.accountteam.dtos.TrainingResponse;
 import com.capstone.accountteam.entity.Status;
@@ -13,31 +14,31 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TrainingController {
-
 
     @Autowired
     private TrainingService trainingService;
 
-    @PostMapping("/trainingRequest")
-    public ResponseEntity<TrainingRequest> submitTrainingRequest(@RequestBody TrainingRequestdto trainingRequest) {
-        TrainingRequest savedRequest=trainingService.requestform(trainingRequest);
+    @PostMapping("/sendRequest")
+    public ResponseEntity<String> submitTrainingRequest(@RequestBody TrainingRequestdto trainingRequest) {
+        String savedRequest=trainingService.requestform(trainingRequest);
         return ResponseEntity.ok(savedRequest);
     }
 
-    @GetMapping("/trainingRequests")
+    @GetMapping("/viewRequests")
     public ResponseEntity<List<TrainingResponse>> getAllTrainingRequests() {
         List<TrainingResponse> requests=trainingService.getAllRequests();
         return ResponseEntity.ok(requests);
     }
-    @GetMapping("/trainingRequest/{requestid}")
+    @GetMapping("/viewRequest/{requestid}")
     public ResponseEntity<TrainingRequest> getTrainingRequestsByRequestid(@PathVariable Long requestid) {
         TrainingRequest request = trainingService.getRequestByrequestid(requestid);
         return ResponseEntity.ok(request);
     }
     @ExceptionHandler(ResourseNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> handleSetNotFoundException(ResourseNotFoundException ex) {
+    public ResponseEntity<String> handleResourseNotFoundException(ResourseNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.OK).body(ex.getMessage());
     }
     @PutMapping("/trainingRequest/{requestid}/status")
@@ -46,9 +47,9 @@ public class TrainingController {
         return ResponseEntity.ok("staus changed");
     }
 
-    @GetMapping("/trainingRequest/requestor/{name}")
-    public ResponseEntity<List<TrainingRequest>> getTrainingRequestByRequestName(@PathVariable String name) {
-        List<TrainingRequest> request = trainingService.getRequestByrequestname(name);
+    @GetMapping("/Dashboard/{name}")
+    public ResponseEntity<List<Dashboarddto>> getTrainingRequestByRequestName(@PathVariable String name) {
+        List<Dashboarddto> request = trainingService.getRequestByrequestname(name);
         return ResponseEntity.ok(request);
     }
 
