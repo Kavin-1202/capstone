@@ -1,15 +1,16 @@
-package com.capstone.accountteam;
+package com.capstone.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@SpringBootApplication
+
 @EnableDiscoveryClient
-public class AccountteamApplication {
+@SpringBootApplication(scanBasePackages = {"com.capstone.apigateway"})
+public class ApigatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountteamApplication.class, args);
+		SpringApplication.run(ApigatewayApplication.class, args);
 	}
 
 }
