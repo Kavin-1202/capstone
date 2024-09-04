@@ -39,14 +39,14 @@ const RequestDetails = () => {
         requestDetails && (
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h1 className="text-2xl font-bold mb-4">{requestDetails.coursename}</h1>
-            <p><strong>Requestor Name:</strong> {requestDetails.requestorname}</p>
+            <p><strong>Manager Name:</strong> {requestDetails.managername}</p>
           <p><strong>Course Name:</strong> {requestDetails.coursename}</p>
           <p><strong>Description:</strong> {requestDetails.description}</p>
           <p><strong>Concepts:</strong> {requestDetails.concepts}</p>
           <p><strong>Duration:</strong> {requestDetails.duration}</p>
           <p><strong>Employee Position:</strong> {requestDetails.employeeposition}</p>
           <p><strong>Status:</strong> {requestDetails.status}</p>
-          <p><strong>Created Date:</strong> {new Date(requestDetails.createddate).toLocaleDateString()}</p>
+          {/* <p><strong>Created Date:</strong> {new Date(requestDetails.createddate).toLocaleDateString()}</p> */}
           <p><strong>Required Employees:</strong> {requestDetails.requiredemployees}</p>
           </div>
         )

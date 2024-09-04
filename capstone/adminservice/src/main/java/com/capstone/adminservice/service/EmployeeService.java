@@ -4,8 +4,11 @@ package com.capstone.adminservice.service;
 import com.capstone.adminservice.client.UserCredentialDTO;
 import com.capstone.adminservice.client.UserManagementFeignClient;
 import com.capstone.adminservice.dto.EmployeeDTO;
+import com.capstone.adminservice.dto.EmployeeResponse;
+import com.capstone.adminservice.entity.CourseAssignment;
 import com.capstone.adminservice.entity.Employee;
 import com.capstone.adminservice.entity.Roles;
+import com.capstone.adminservice.repository.CourseAssignmentRepository;
 import com.capstone.adminservice.repository.EmployeeRepository;
 import com.capstone.adminservice.utils.EmployeeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class EmployeeService {
 
     @Autowired
     UserManagementFeignClient userClient;
+
+    @Autowired
+    CourseAssignmentRepository courseAssignmentRepository;
 
 
 //    @Autowired
@@ -73,17 +79,18 @@ public class EmployeeService {
 
     public void addEmployees(List<String> emails){
 
-//        String subject = "FYI:Login Credentials";
+        String subject = "FYI:Login Credentials";
 //
         for(String email:emails){
-//            SimpleMailMessage simpleMailMessage =  new SimpleMailMessage();
-//            simpleMailMessage.setFrom(sender);
-//            simpleMailMessage.setTo(email);
-//            simpleMailMessage.setSubject(subject);
+            SimpleMailMessage simpleMailMessage =  new SimpleMailMessage();
+            simpleMailMessage.setFrom(sender);
+            simpleMailMessage.setTo(email);
+            simpleMailMessage.setSubject(subject);
 
             String password = EmployeeUtils.generateRandomString(8);
-//            String body = email + "\n" + password;
-//            simpleMailMessage.setText(body);
+            String body = email + "\n" + password;
+            simpleMailMessage.setText(body);
+            javaMailSender.send(simpleMailMessage);
 
             String username = email.substring(0, email.indexOf('@'));
             Employee employee = new Employee();
@@ -93,20 +100,47 @@ public class EmployeeService {
             employee.setRole(Roles.EMPLOYEE);
 
 
-            UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
-            userCredentialDTO.setId(employee.getEmployeeid());
-            userCredentialDTO.setUsername(employee.getUsername());
-            userCredentialDTO.setEmail(employee.getEmail());
-            userCredentialDTO.setPassword(employee.getPassword());
-            userCredentialDTO.setRole(Roles.EMPLOYEE);
-            userClient.createUser(userCredentialDTO);
+
+           UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
+           userCredentialDTO.setUsername(username);
+           userCredentialDTO.setPassword(password);
+           userCredentialDTO.setEmail(email);
+           userCredentialDTO.setAccountid(0L);
+           userCredentialDTO.setAccountname(null);
+           userCredentialDTO.setRole(Roles.EMPLOYEE);
+           userClient.createUser(userCredentialDTO);
+
             employeeRepository.save(employee);
-         //   javaMailSender.send(simpleMailMessage);
+
+
         }
 
 
 
 
+    }
+
+    public List<EmployeeResponse> getCoursesAssignedToEmployeeByUsername(String username) {
+        System.out.println("Fetching courses for username: " + username); // Log username
+
+        List<CourseAssignment> courseAssignments = courseAssignmentRepository.findCourseAssignmentsByEmployeeUsername(username);
+
+        System.out.println("Found assignments: " + courseAssignments.size()); // Log the number of assignments found
+
+        return courseAssignments.stream()
+                .map(courseAssignment -> {
+                    EmployeeResponse dto = new EmployeeResponse();
+                    dto.setCoursename(courseAssignment.getCourse().getCoursename());
+                    dto.setDescription(courseAssignment.getCourse().getDescription());
+                    dto.setResourcelinks(courseAssignment.getCourse().getResourcelinks());
+                    dto.setOtherlinks(courseAssignment.getCourse().getOtherlinks());
+                    dto.setOutcomes(courseAssignment.getCourse().getOutcomes());
+                    dto.setAssignedDate(courseAssignment.getAssignedDate());
+                    dto.setDeadline(courseAssignment.getDeadline());
+                    dto.setCoursestatus(courseAssignment.getCoursestatus());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }
 

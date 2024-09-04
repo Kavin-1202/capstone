@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPowerOff, FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
-//import logo from '../path-to-logo/logo.png'; // Update the path to your logo
 
-const NavBarComponent = () => {
+const NavBarComponent = ({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Call the onLogout prop function
+    if (onLogout) {
+      onLogout();
+    }
+    // Optionally clear any local state or tokens here
+    navigate('/login'); // Redirect to the login page
   };
 
   return (
@@ -28,8 +37,7 @@ const NavBarComponent = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-         
-            <span className="text-white text-md font-bold ">Learning Hub</span>
+            <span className="text-white text-md font-bold">Learning Hub</span>
           </Link>
 
           {/* User Info and Logout */}
@@ -37,7 +45,10 @@ const NavBarComponent = () => {
             <span className="text-white font-bold hidden lg:block">Hey Admin!</span>
             <div className="flex items-center">
               <FaUserCircle className="text-white text-2xl" />
-              <FaPowerOff className="text-white text-2xl ml-4 cursor-pointer hover:text-gray-400" />
+              <FaPowerOff 
+                onClick={handleLogout}
+                className="text-white text-2xl ml-4 cursor-pointer hover:text-gray-400"
+              />
             </div>
           </div>
         </div>

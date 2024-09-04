@@ -1,27 +1,22 @@
-package com.capstone.accountteam.dtos;
+package com.capstone.adminservice.dto;
 
-import com.capstone.accountteam.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import org.springframework.data.annotation.AccessType;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainingRequestDto {
+public class TrainingFullResponse {
 
-    private  Long requestid;
-    private Long accountid; // Changed to Long to match typical ID type
-    private String managername;
+    private Long requestid;
     private String coursename;
     private String description;
     private String concepts;
     private String duration;
     private String employeeposition;
+    // PENDING or COMPLETED
     private int requiredemployees;
-    private Status status;
-
-
+    private String managername;
 }

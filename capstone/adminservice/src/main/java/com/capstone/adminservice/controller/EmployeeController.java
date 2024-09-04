@@ -1,6 +1,7 @@
 package com.capstone.adminservice.controller;
 
 import com.capstone.adminservice.dto.EmployeeDTO;
+import com.capstone.adminservice.dto.EmployeeResponse;
 import com.capstone.adminservice.entity.Employee;
 import com.capstone.adminservice.service.EmployeeService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +55,16 @@ public class EmployeeController {
     public ResponseEntity<String> addEmployees(@RequestBody List<String> emails){
         employeeService.addEmployees(emails);
         return ResponseEntity.ok("credentials sent successfully");
+    }
+
+
+    @GetMapping("/courses/{username}")
+    public ResponseEntity<List<EmployeeResponse>> getCoursesAssignedToEmployeeByUsername(@PathVariable String username) {
+        List<EmployeeResponse> courses = employeeService.getCoursesAssignedToEmployeeByUsername(username);
+        if (courses.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
 

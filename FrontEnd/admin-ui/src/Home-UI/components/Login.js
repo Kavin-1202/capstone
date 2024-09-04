@@ -29,13 +29,18 @@ const LoginForm = () => {
 
       if(localStorage.getItem('role')==='MANAGER')
       navigate('/manager-dashboard'); // Navigate to a dashboard or home page
+
+      else if(localStorage.getItem('role')==='EMPLOYEE')
+      navigate('/employee-dashboard')
+      else if(localStorage.getItem('role')=='ADMIN')
+      navigate('/admin-dashboard')
     } catch (error) {
       toast.error('Invalid username or password');
     }
   };
 
   const handleBack = () => {
-    navigate(-1); // Navigate back to the previous page
+    navigate('/'); // Navigate back to the previous page
   };
 
   return (

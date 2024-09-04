@@ -16,7 +16,7 @@ const CreateCourseForm = () => {
   const [formData, setFormData] = useState({
     requestid: '',
     accountid: '',
-    requestorname: '',
+    managername: '',
     coursename: '',
     description: '',
     concepts: '',
@@ -99,7 +99,7 @@ useEffect(() => {
     setFormData({
       requestid: '',
       accountid: '',
-      requestorname: '',
+      managername: '',
       coursename: '',
       description: '',
       concepts: '',
@@ -129,7 +129,7 @@ useEffect(() => {
             value={formData.requestid}
             onChange={handleChange}
             className="border border-gray-300 p-2 rounded w-full"
-            required
+            disabled
           />
         </div>
         <div>
@@ -140,18 +140,18 @@ useEffect(() => {
             value={formData.accountid}
             onChange={handleChange}
             className="border border-gray-300 p-2 rounded w-full"
-            required
+            disabled
           />
         </div>
         <div>
-          <label className="block text-gray-700">Requestor Name</label>
+          <label className="block text-gray-700">Manager Name</label>
           <input
             type="text"
-            name="requestorname"
-            value={formData.requestorname}
+            name="managername"
+            value={formData.managername}
             onChange={handleChange}
             className="border border-gray-300 p-2 rounded w-full"
-            required
+            disabled
           />
         </div>
         <div>
@@ -162,7 +162,7 @@ useEffect(() => {
             value={formData.coursename}
             onChange={handleChange}
             className="border border-gray-300 p-2 rounded w-full"
-            required
+            disabled
           />
         </div>
         <div>
@@ -173,7 +173,7 @@ useEffect(() => {
             value={formData.description}
             onChange={handleChange}
             className="border border-gray-300 p-2 rounded w-full"
-            required
+            disabled
           />
         </div>
         <div>
@@ -184,6 +184,7 @@ useEffect(() => {
             value={formData.concepts}
             onChange={handleChange}
             className="border border-gray-300 p-2 rounded w-full"
+            disabled
           />
         </div>
         <div>
@@ -200,7 +201,7 @@ useEffect(() => {
             onClick={handleAddLink}
             className="bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600"
           >
-            Add Another
+            Add 
           </button>
           <ul className="mt-4">
             {resourceLinks.map((link, index) => (

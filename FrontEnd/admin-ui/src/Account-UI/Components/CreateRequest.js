@@ -1,55 +1,53 @@
-// CreateRequest.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const CreateRequest = () => {
-  const username = localStorage.getItem('username');
+  const managername = localStorage.getItem('username');
   const navigate = useNavigate();
 
   // Initialize state for form data
   const [formData, setFormData] = useState({
     accountid: '',
-    username: '',
+    managername: '', // Fixed spelling from 'mangername' to 'managername'
     coursename: '',
     description: '',
     concepts: '',
     duration: '',
     employeeposition: '',
     status: 'PENDING', // Default status
-    createddate: new Date().toISOString().split('T')[0], // Default current date
     requiredemployees: 0,
   });
 
   // Fetch user details based on username from localStorage when the component mounts
   useEffect(() => {
-    const username = localStorage.getItem('username');
-
-    if (username) {
+    if (managername) {
       // Make an axios GET request to fetch user details
-      axios.get(`http://localhost:9002/users/byName/${username}`)
+      axios.get(`http://localhost:9002/users/byName/${managername}`)
         .then(response => {
-          const { accountid, username,accountname } = response.data;
+          const { accountid, username } = response.data;
           setFormData(prevFormData => ({
             ...prevFormData,
             accountid,
-            username,
+            managername: username,
           }));
         })
         .catch(error => {
-          console.error('Failed to fetch user details:', error);
+          console.error('Failed to fetch user details:', error.response ? error.response.data : error.message);
           alert('Failed to fetch user details. Please try again.');
         });
+    } else {
+      alert('Manager name not found in local storage.');
     }
-  }, []);
+  }, [managername]);
 
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prevFormData => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
   // Handle form submission
@@ -59,16 +57,17 @@ const CreateRequest = () => {
     // Basic validation
     if (!formData.coursename) {
       console.error('Course Name is required.');
+      alert('Course Name is required.');
       return;
     }
 
     // Post the training request to the backend
-    axios.post(`http://localhost:9000/accounts/sendRequest/${username}`, formData)
+    axios.post(`http://localhost:9000/accounts/sendRequest/${managername}`, formData)
       .then(() => {
-        navigate('/'); // Redirect to the home page on successful submission
+        navigate(-1); // Redirect to the home page on successful submission
       })
       .catch(error => {
-        console.error('Failed to save request:', error);
+        console.error('Failed to save request:', error.response ? error.response.data : error.message);
         alert('Failed to save request. Please try again.');
       });
   };
@@ -89,8 +88,8 @@ const CreateRequest = () => {
         />
         <input
           type="text"
-          name="requestorname"
-          value={formData.username}
+          name="managername"
+          value={formData.managername}
           onChange={handleChange}
           placeholder="Manager Name"
           className="p-2 border rounded w-full"

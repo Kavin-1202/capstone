@@ -1,8 +1,5 @@
 package com.capstone.accountteam.controller;
-import com.capstone.accountteam.dtos.Dashboarddto;
-import com.capstone.accountteam.dtos.ManagerDTO;
-import com.capstone.accountteam.dtos.TrainingRequestDto;
-import com.capstone.accountteam.dtos.TrainingResponse;
+import com.capstone.accountteam.dtos.*;
 import com.capstone.accountteam.entity.Manager;
 import com.capstone.accountteam.entity.Status;
 import com.capstone.accountteam.entity.TrainingRequest;
@@ -53,8 +50,8 @@ public class TrainingController {
         return ResponseEntity.ok(requests);
     }
     @GetMapping("/viewRequest/{requestid}")
-    public ResponseEntity<TrainingRequest> getTrainingRequestsByRequestid(@PathVariable Long requestid) {
-        TrainingRequest request = trainingService.getRequestByrequestid(requestid);
+    public ResponseEntity<TrainingRequestDto> getTrainingRequestsByRequestid(@PathVariable Long requestid) {
+        TrainingRequestDto request = trainingService.getRequestByrequestid(requestid);
         return ResponseEntity.ok(request);
     }
     @ExceptionHandler(ResourseNotFoundException.class)

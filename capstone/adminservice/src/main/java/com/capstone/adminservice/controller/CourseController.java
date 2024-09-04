@@ -2,7 +2,7 @@ package com.capstone.adminservice.controller;
 
 import com.capstone.adminservice.dto.CourseDTO;
 import com.capstone.adminservice.dto.FullResponse;
-import com.capstone.adminservice.client.TrainingRequestDTO;
+import com.capstone.adminservice.client.TrainingRequestDto;
 import com.capstone.adminservice.client.TrainingResponse;
 import com.capstone.adminservice.entity.Course;
 import com.capstone.adminservice.exceptions.ResourceNotFoundException;
@@ -67,7 +67,7 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getRequests());
     }
     @GetMapping("/dashboard/view/{requestid}")
-    public ResponseEntity<TrainingRequestDTO> getRequestPlan(@PathVariable Long requestid){
+    public ResponseEntity<TrainingRequestDto> getRequestPlan(@PathVariable Long requestid){
         return ResponseEntity.ok(courseService.getRequest(requestid));
     }
 

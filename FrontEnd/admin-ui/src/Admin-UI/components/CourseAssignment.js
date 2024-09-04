@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { toast, } from 'react-toastify';
+import { toast, ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CourseAssignment = ({ courseid, onClose }) => {
@@ -69,7 +69,7 @@ const CourseAssignment = ({ courseid, onClose }) => {
       </button>
       <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2">Course Details</h3>
-        <p><strong>Course Name:</strong> {course.name}</p>
+        <p><strong>Course Name:</strong> {course.coursename}</p>
         <p><strong>Description:</strong> {course.description}</p>
         <p><strong>Concepts:</strong> {course.concepts}</p>
         <p><strong>Duration:</strong> {course.duration}</p>
@@ -107,7 +107,7 @@ const CourseAssignment = ({ courseid, onClose }) => {
           </div>
         ))}
       </div>
-      
+      <ToastContainer/>
     </div>
     
   );

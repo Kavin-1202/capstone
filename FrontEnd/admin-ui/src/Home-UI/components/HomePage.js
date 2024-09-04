@@ -10,17 +10,16 @@ const HomePage = () => {
       <main className="p-8">
         <section className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4">Welcome to LearningHub</h2>
-          <p className="mb-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique.
-          </p>
-          <p className="mb-4">
-            Integer nec bibendum lacus. Suspendisse dictum enim sit amet libero malesuada feugiat. Praesent malesuada congue magna at finibus. Sed mauris dolor, placerat eget nibh et, molestie convallis est. Integer pellentesque, velit a consectetur elementum, nunc metus cursus purus, id scelerisque justo nulla ut mauris.
-          </p>
-          <p className="mb-4">
-            Quisque vel volutpat eros, et maximus augue. Cras in nisi placerat, ullamcorper elit quis, ultricies orci. Fusce eleifend, arcu nec aliquet sollicitudin, risus sapien ultricies leo, non cursus ex urna a orci. Pellentesque finibus pharetra dolor sit amet condimentum.
-          </p>
           <p>
-            Suspendisse potenti. Pellentesque lobortis elit eu varius consectetur. Praesent imperdiet felis quis elit maximus, in malesuada turpis elementum. Proin dictum ligula vel nunc scelerisque, sit amet venenatis erat aliquam. Donec vitae tincidunt leo.
+          Problem Statement 11: 
+Scenario: In large organizations, the Learning and Development (L&D) team plays a crucial role in 
+upskilling employees, ensuring compliance with training requirements, and fostering a culture of 
+continuous learning. However, managing multiple training programs, tracking employee progress, 
+and ensuring the relevance of content across diverse roles can be challenging. L&D teams often 
+struggle with coordinating training schedules, personalizing learning paths, and gathering feedback 
+to improve future programs. Additionally, with remote and hybrid work models becoming more 
+prevalent, traditional in-person training methods are less feasible, requiring a shift to digital 
+solutions.
           </p>
         </section>
       </main>

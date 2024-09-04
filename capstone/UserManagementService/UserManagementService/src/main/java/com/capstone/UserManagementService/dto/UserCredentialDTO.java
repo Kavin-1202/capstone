@@ -12,7 +12,7 @@ public class UserCredentialDTO {
     private String username;
     private String email;
     private String password;
-    private Roles role = Roles.MANAGER;
+    private Roles role;
     private  Long accountid;
     private String accountname;
 }

@@ -1,6 +1,8 @@
 package com.capstone.UserManagementService.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,12 +24,14 @@ public class UserCredential {
     private String email;
     private String password;
     private Roles role;
+    @Column(nullable = true)
     private  Long accountid;
+    @Column(nullable = true)
     private String accountname;
 
     public enum Roles {
         MANAGER,
         ADMIN,
-        USER
+        EMPLOYEE
     }
 }

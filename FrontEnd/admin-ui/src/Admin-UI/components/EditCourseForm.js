@@ -19,7 +19,9 @@ const EditCourseForm = () => {
     outcomes: '',    // Added state for outcomes
     resourcelinks: '', // Added state for resource links
   });
-  const [resourceLinks, setResourceLinks] = useState([]); // State for resource links array
+  const [resourceLinks, setResourceLinks] = useState([]);
+  const [otherLinks, setOtherLinks] = useState([]);
+  const [, setOutcomes] = useState([]);
 
   useEffect(() => {
     // Fetch course data to edit
@@ -33,6 +35,9 @@ const EditCourseForm = () => {
           outcomes: '',
         });
         setResourceLinks(response.data.resourcelinks ? response.data.resourcelinks.split(', ') : []);
+        setOtherLinks(response.data.otherLinks ? response.data.otherlinks.split(', ') : []);
+        setOutcomes(response.data.outcomes ? response.data.outcomes.split(', ') : []);
+        
       } catch (error) {
         toast.error('Error fetching course details.');
         console.error("Error fetching course details:", error);
@@ -67,7 +72,7 @@ const EditCourseForm = () => {
         resourcelinks: resourceLinks.join(', '), // Convert array to comma-separated string
       });
       toast.success('Course updated successfully!');
-     setTimeout(()=>navigate('/'),4000);  // Navigate back to the admin dashboard after successful update
+     setTimeout(()=>navigate(-1),4000);  // Navigate back to the admin dashboard after successful update
     } catch (error) {
       toast.error('Error updating course.');
       console.error("Error updating course:", error);

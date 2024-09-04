@@ -38,8 +38,8 @@ public class TrainingService {
                 findByUsername(trainingRequestDto.getManagername())==null)
            throw new ResourseNotFoundException("Manager not found");
         BeanUtils.copyProperties(trainingRequestDto, request);
-        request.setCreateddate(LocalDate.now());
-        request.setStatus(Status.Pending);
+//        request.setCreateddate(LocalDate.now());
+        request.setStatus(Status.PENDING);
 
         // Fetch and set the associated manager
         Manager manager = managerRepository.findByUsername(trainingRequestDto.getManagername());
@@ -62,9 +62,23 @@ public class TrainingService {
         return sendrequest;
     }
 
-    public TrainingRequest getRequestByrequestid(Long requestid) {
-        return trainingRequestRepository.findById(requestid)
+    public TrainingRequestDto getRequestByrequestid(Long requestid) {
+        TrainingRequest request=trainingRequestRepository.findById(requestid)
                 .orElseThrow(() -> new ResourseNotFoundException("Request not found"));
+        TrainingRequestDto requestDto=new TrainingRequestDto();
+
+        requestDto.setRequestid(requestid);
+        requestDto.setAccountid(request.getManager().getAccountid());
+        requestDto.setManagername(request.getManager().getUsername());
+        requestDto.setConcepts(request.getConcepts());
+        requestDto.setDescription(request.getDescription());
+        requestDto.setCoursename(request.getCoursename());
+        requestDto.setEmployeeposition(request.getEmployeeposition());
+        requestDto.setDuration(request.getDuration());
+        requestDto.setRequiredemployees(request.getRequiredemployees());
+        requestDto.setStatus(request.getStatus());
+        return requestDto;
+
     }
 
     public void updateRequestStatus(Long requestid, Status status) {

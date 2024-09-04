@@ -30,17 +30,20 @@ public class UserCredentialService {
             UserCredential userCredential = new UserCredential();
             ManagerDTO managerDTO = new ManagerDTO();
             BeanUtils.copyProperties(userCredentialDTO, userCredential);
+            if(userCredential.getRole()== UserCredential.Roles.MANAGER) {
 
-            managerDTO.setUsername(userCredentialDTO.getUsername());
-            managerDTO.setEmail(userCredentialDTO.getEmail());
-            managerDTO.setPassword(userCredentialDTO.getPassword());
-            managerDTO.setRole(userCredentialDTO.getRole());
-            managerDTO.setAccountid(userCredentialDTO.getAccountid());
-            managerDTO.setAccountname(userCredentialDTO.getAccountname());
+                managerDTO.setUsername(userCredentialDTO.getUsername());
+                managerDTO.setEmail(userCredentialDTO.getEmail());
+                managerDTO.setPassword(userCredentialDTO.getPassword());
+                managerDTO.setRole(userCredentialDTO.getRole());
+                managerDTO.setAccountid(userCredentialDTO.getAccountid());
+                managerDTO.setAccountname(userCredentialDTO.getAccountname());
 
+
+                managerClient.addManager(managerDTO);
+            }
             userCredentialRepository.save(userCredential);
-            managerClient.addManager(managerDTO);
-            return userCredentialDTO;
+                return userCredentialDTO;
         } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("Username or email already exists");
         }

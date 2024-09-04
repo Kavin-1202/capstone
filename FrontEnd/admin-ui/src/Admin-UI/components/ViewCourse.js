@@ -92,6 +92,10 @@ const ViewCourse = () => {
         <h2 className="text-xl font-semibold mb-2">Outcomes:</h2>
         <p>{course.outcomes}</p>
       </div>
+      <div>
+        <button type='button' className="bg-gray-500 text-white px-4 py-2 rounded mb-4 hover:bg-gray-600">
+          View Course Feedbacks</button>
+      </div>
     </div>
   );
 };
