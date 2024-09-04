@@ -12,7 +12,8 @@ const CourseDetails = () => {
   const [error, setError] = useState(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const navigate = useNavigate();
-  const [employeeid] = useState(1); // Replace with actual employee ID logic
+  const [employeeid, setEmployeeId] = useState(null); // Replace with actual employee ID logic
+  const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -29,7 +30,35 @@ const CourseDetails = () => {
 
     fetchCourseDetails();
   }, [coursename]);
+  
+  // useEffect(() => {
+  //   // Fetch the employee ID using the username stored in local storage
+  //   const fetchEmployeeId = async () => {
+  //     const username = localStorage.getItem('username');
+  //     if (!username) {
+  //       setError('Username not found');
+  //       setLoading(false);
+  //       return;
+  //     }
 
+ 
+  const fetchEmployeeId= async()=>{
+      try {
+        const username = localStorage.getItem('username')
+        const response = await axios.get(`http://localhost:9001/admin/employees/username?username=${username}`);
+        setEmployeeId(response.data.employeeid);
+        console.log(response.data); // Assuming the employee ID is returned as `employeeid`
+      } catch (err) {
+        setError('Error fetching employee ID');
+        setLoading(false);
+      }
+    }
+
+  //   fetchEmployeeId();
+  // }, []);
+useEffect(()=>{
+  fetchEmployeeId();
+},[])
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -116,8 +145,9 @@ return (
         <button
             onClick={() => setShowFeedbackForm(true)}
             className="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            disabled={isFeedbackSubmitted} // Disable the button if feedback is submitted
           >
-            Give Feedback
+            {isFeedbackSubmitted ? 'Feedback Submitted' : 'Give Feedback'}
           </button>
       </div>
     )}
@@ -127,6 +157,7 @@ return (
           courseid={courseDetails?.courseid}
           employeeid={employeeid}
           onClose={() => setShowFeedbackForm(false)}
+          onSubmitSuccess={() => setIsFeedbackSubmitted(true)}
         />
       )}
   </div>

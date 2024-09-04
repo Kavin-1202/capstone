@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-const FeedbackForm = ({ courseid, employeeid, onClose }) => {
+const FeedbackForm = ({ courseid, employeeid, onClose,onSubmitSuccess }) => {
   const [comments, setComments] = useState('');
   const [rating, setRating] = useState(0);
   const [error, setError] = useState(null);
@@ -22,7 +22,9 @@ const FeedbackForm = ({ courseid, employeeid, onClose }) => {
       setSuccess('Feedback submitted successfully!');
       setComments('');
       setRating(0);
-      navigate(-1);
+      onSubmitSuccess(); // Update the state in the parent component
+      onClose(); // Close the feedback form after submission
+      // navigate(-1);
     } catch (err) {
       setError('Failed to submit feedback.');
     }

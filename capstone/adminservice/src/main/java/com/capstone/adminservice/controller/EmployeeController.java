@@ -2,6 +2,7 @@ package com.capstone.adminservice.controller;
 
 import com.capstone.adminservice.dto.EmployeeDTO;
 import com.capstone.adminservice.dto.EmployeeResponse;
+import com.capstone.adminservice.dto.EmployeeUserdto;
 import com.capstone.adminservice.entity.Employee;
 import com.capstone.adminservice.service.EmployeeService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,19 +26,24 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-
-
     // Get all Employees
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         List<EmployeeDTO> employees = employeeService.getAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
-
     // Get an Employee by ID
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         EmployeeDTO employee = employeeService.getEmployeeById(id);
+        if (employee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+    @GetMapping("/username")
+    public ResponseEntity<EmployeeUserdto> getEmployeeByUsername(@RequestParam String username){
+        EmployeeUserdto employee=employeeService.getEmployeeByUsername(username);
         if (employee == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

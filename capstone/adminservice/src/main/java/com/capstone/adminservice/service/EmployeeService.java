@@ -3,11 +3,11 @@ package com.capstone.adminservice.service;
 
 import com.capstone.adminservice.client.UserCredentialDTO;
 import com.capstone.adminservice.client.UserManagementFeignClient;
+import com.capstone.adminservice.dto.CourseDetailDto;
 import com.capstone.adminservice.dto.EmployeeDTO;
 import com.capstone.adminservice.dto.EmployeeResponse;
-import com.capstone.adminservice.entity.CourseAssignment;
-import com.capstone.adminservice.entity.Employee;
-import com.capstone.adminservice.entity.Roles;
+import com.capstone.adminservice.dto.EmployeeUserdto;
+import com.capstone.adminservice.entity.*;
 import com.capstone.adminservice.repository.CourseAssignmentRepository;
 import com.capstone.adminservice.repository.EmployeeRepository;
 import com.capstone.adminservice.utils.EmployeeUtils;
@@ -111,15 +111,9 @@ public class EmployeeService {
            userClient.createUser(userCredentialDTO);
 
             employeeRepository.save(employee);
-
-
         }
 
-
-
-
     }
-
     public List<EmployeeResponse> getCoursesAssignedToEmployeeByUsername(String username) {
         System.out.println("Fetching courses for username: " + username); // Log username
 
@@ -141,6 +135,44 @@ public class EmployeeService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+    public CourseDetailDto startCourse(Long courseAssignmentId, String username) {
+        CourseAssignment courseAssignment = courseAssignmentRepository.findById(courseAssignmentId)
+                .orElseThrow(() -> new RuntimeException("Course Assignment not found"));
+
+        // Check if the employee is assigned to the course
+        boolean isEmployeeAssigned = courseAssignment.getEmployees().stream()
+                .anyMatch(employee -> employee.getUsername().equals(username));
+
+        if (!isEmployeeAssigned) {
+            throw new RuntimeException("Employee is not assigned to this course");
+        }
+
+        // Update the status to "started"
+        courseAssignment.setCoursestatus(Coursestatus.STARTED);
+        courseAssignmentRepository.save(courseAssignment);
+
+        // Fetch the course details from the linked Course entity
+        Course course = courseAssignment.getCourse(); // Assuming `CourseAssignment` has a `Course` reference
+
+        // Create a DTO to return course details
+        CourseDetailDto courseDetailsDTO = new CourseDetailDto();
+        courseDetailsDTO.setCourseid(course.getCourseid());
+        courseDetailsDTO.setCoursename(course.getCoursename());
+        courseDetailsDTO.setDescription(course.getDescription());
+        courseDetailsDTO.setResourcelinks(course.getResourcelinks());
+        courseDetailsDTO.setOtherlinks(course.getOtherlinks());
+        courseDetailsDTO.setOutcomes(course.getOutcomes());
+
+        return courseDetailsDTO; // Return the course details
+    }
+    public EmployeeUserdto getEmployeeByUsername(String username){
+        Employee emp=employeeRepository.findByUsername(username);
+        EmployeeUserdto dto=new EmployeeUserdto();
+        dto.setEmail(emp.getEmail());
+        dto.setUsername(emp.getUsername());
+        dto.setEmployeeid(emp.getEmployeeid());
+        return dto;
     }
 }
 

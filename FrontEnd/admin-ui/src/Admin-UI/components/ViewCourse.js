@@ -7,7 +7,11 @@ const ViewCourse = () => {
   const { courseid } = useParams();
   const [course, setCourse] = useState(null);
   const [error, setError] = useState('');
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [feedbackError, setFeedbackError] = useState('');
+  const [showFeedbacks, setShowFeedbacks] = useState(false);
   const navigate = useNavigate();
+  const [employeeUsernames, setEmployeeUsernames] = useState({});
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -22,6 +26,34 @@ const ViewCourse = () => {
 
     fetchCourseData();
   }, [courseid]);
+
+  const fetchFeedbacks = async () => {
+    try {
+      const response = await axios.get(`http://localhost:9001/admin/feedbacks/course/${courseid}`);
+      setFeedbacks(response.data);
+      setShowFeedbacks(true); // Show feedbacks after fetching
+      fetchEmployeeUsernames(response.data);
+    } catch (error) {
+      setFeedbackError('Error fetching feedbacks.');
+      console.error(error);
+    }
+  };
+  // Function to fetch usernames based on employee IDs from feedbacks
+  const fetchEmployeeUsernames = async (feedbacks) => {
+    const usernames = {};
+    await Promise.all(
+      feedbacks.map(async (feedback) => {
+        try {
+          const employeeResponse = await axios.get(`http://localhost:9001/admin/employees/${feedback.employeeid}`);
+          usernames[feedback.employeeid] = employeeResponse.data.username;
+        } catch (error) {
+          console.error(`Error fetching username for employee ID ${feedback.employeeid}`, error);
+        }
+      })
+    );
+    setEmployeeUsernames(usernames);
+  };
+  
 
   if (error) return <div className="text-red-500">{error}</div>;
   if (!course) return <div>Loading...</div>;
@@ -92,10 +124,44 @@ const ViewCourse = () => {
         <h2 className="text-xl font-semibold mb-2">Outcomes:</h2>
         <p>{course.outcomes}</p>
       </div>
+      {/* Button to view feedbacks */}
       <div>
-        <button type='button' className="bg-gray-500 text-white px-4 py-2 rounded mb-4 hover:bg-gray-600">
-          View Course Feedbacks</button>
+        <button
+          type="button"
+          onClick={fetchFeedbacks}
+          className="bg-gray-500 text-white px-4 py-2 rounded mb-4 hover:bg-gray-600"
+        >
+          View Course Feedbacks
+        </button>
       </div>
+
+      {/* Display feedbacks if available */}
+      {feedbackError && <div className="text-red-500">{feedbackError}</div>}
+      {showFeedbacks && feedbacks.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-2">Feedbacks:</h2>
+          <table className="min-w-full bg-white border">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border">Feedback ID</th>
+                <th className="py-2 px-4 border">Feedback</th>
+                <th className="py-2 px-4 border">Rating</th>
+                <th className="py-2 px-4 border">Submitted By</th>
+              </tr>
+            </thead>
+            <tbody>
+              {feedbacks.map((feedback) => (
+                <tr key={feedback.feedbackId}>
+                  <td className="py-2 px-4 border">{feedback.feedbackid}</td>
+                  <td className="py-2 px-4 border">{feedback.comments}</td>
+                  <td className="py-2 px-4 border">{feedback.rating}</td>
+                  <td className="py-2 px-4 border">{employeeUsernames[feedback.employeeid] || feedback.employeeid}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

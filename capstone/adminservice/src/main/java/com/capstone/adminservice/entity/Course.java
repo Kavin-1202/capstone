@@ -41,4 +41,5 @@ public class Course {
     @JsonManagedReference
     @OneToMany(mappedBy = "course")
     private List<CourseAssignment> courseAssignments;
+    private Long feedbackid;
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.AccessType;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +21,5 @@ public class TrainingFullResponse {
     // PENDING or COMPLETED
     private int requiredemployees;
     private String managername;
+    private LocalDate createddate;
 }

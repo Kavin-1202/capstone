@@ -39,14 +39,7 @@ public class CourseAssignment {
 
     private LocalDate assignedDate;
     private LocalDate deadline;
-
     private Coursestatus Coursestatus;
-
-//    public enum Coursestatus {
-//        Assigned,
-//        Started,
-//        Completed
-//    }
 
 }
 

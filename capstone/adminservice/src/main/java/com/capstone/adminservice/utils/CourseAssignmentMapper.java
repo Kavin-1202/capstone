@@ -2,6 +2,7 @@ package com.capstone.adminservice.utils;
 
 import com.capstone.adminservice.entity.Course;
 import com.capstone.adminservice.entity.CourseAssignment;
+import com.capstone.adminservice.entity.Coursestatus;
 import com.capstone.adminservice.entity.Employee;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class CourseAssignmentMapper {
         CourseAssignment courseAssignment = new CourseAssignment();
         courseAssignment.setCourse(course);
         courseAssignment.setEmployees(employees);
+        courseAssignment.setCoursestatus(Coursestatus.ASSIGNED);
         courseAssignment.setAssignedDate(LocalDate.now());
         courseAssignment.setDeadline(deadline);
         return courseAssignment;

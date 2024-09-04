@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TrainingResponse {
     private Long requestid;
-    private String accountid;
+    private Long accountid;
     private String managername;
     private String coursename;
     private Status status; // PENDING or COMPLETED

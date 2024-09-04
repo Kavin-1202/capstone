@@ -30,6 +30,7 @@ public class Employee {
     @JsonBackReference
     @ManyToMany(mappedBy = "employees")
     private List<CourseAssignment> courseAssignments;
+    private Long feedbackid;
 
 }
 

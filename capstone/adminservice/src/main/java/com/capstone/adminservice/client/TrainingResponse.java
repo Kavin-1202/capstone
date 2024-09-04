@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TrainingResponse {
     private Long requestid;
-    private String accountid;
-    private String requestorname;
+    private Long accountid;
+    private String managername;
     private String coursename;
-    private Status status;
+    private Status status; // PENDING or COMPLETED
     private LocalDate createddate;
 }

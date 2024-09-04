@@ -38,7 +38,7 @@ public class TrainingService {
                 findByUsername(trainingRequestDto.getManagername())==null)
            throw new ResourseNotFoundException("Manager not found");
         BeanUtils.copyProperties(trainingRequestDto, request);
-//        request.setCreateddate(LocalDate.now());
+        request.setCreateddate(LocalDate.now());
         request.setStatus(Status.PENDING);
 
         // Fetch and set the associated manager
@@ -56,7 +56,10 @@ public class TrainingService {
         List<TrainingResponse> sendrequest = new ArrayList<>();
         for (TrainingRequest trainingRequest : requests) {
             TrainingResponse request = new TrainingResponse();
-            BeanUtils.copyProperties(trainingRequest, request);
+            request.setAccountid(trainingRequest.getManager().getAccountid());
+            request.setManagername(trainingRequest.getManager().getUsername());
+            request.setCreateddate(trainingRequest.getCreateddate());
+            BeanUtils.copyProperties(trainingRequest,request);
             sendrequest.add(request);
         }
         return sendrequest;
@@ -97,6 +100,7 @@ public class TrainingService {
         for (TrainingRequest request : requests) {
             Dashboarddto dto = new Dashboarddto();
             BeanUtils.copyProperties(request, dto);
+            dto.setCreateddate(request.getCreateddate());
             dashboarddtoList.add(dto);
         }
         return dashboarddtoList;

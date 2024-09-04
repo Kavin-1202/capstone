@@ -141,7 +141,7 @@ const AdminDashboard = () => {
           <h4 className="text-lg font-semibold mb-4">Pending Requests</h4>
           <div className="flex items-center justify-between border-b border-gray-300 pb-2 mb-2 text-sm font-semibold text-gray-700">
             <div className="w-1/12">SL No</div>
-            {/* <div className="w-3/12">Manager Name</div> */}
+            <div className="w-3/12">Manager Name</div>
             <div className="w-4/12">Training Program</div>
             <div className="w-4/12 text-center">Actions</div>
           </div>
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
           <h4 className="text-lg font-semibold mb-4">Completed Requests</h4>
           <div className="flex items-center justify-between border-b border-gray-300 pb-2 mb-2 text-sm font-semibold text-gray-700">
             <div className="w-1/12">SL No</div>
-            {/* <div className="w-3/12">Manager Name</div> */}
+            <div className="w-3/12">Manager Name</div>
             <div className="w-4/12">Training Program</div>
             <div className="w-4/12 text-center">Actions</div>
           </div>
